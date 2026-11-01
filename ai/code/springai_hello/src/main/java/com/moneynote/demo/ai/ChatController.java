@@ -1,6 +1,7 @@
 package com.moneynote.demo.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,11 +28,11 @@ public class ChatController {
     }
 
     @GetMapping(value = "/ai/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
+    public Flux<ChatResponse> generateStream(@RequestParam(value = "message", defaultValue = "你是谁？") String message) {
         return chatClient.prompt()
                 .user(message)
                 .stream()
-                .content();
+                .chatResponse();
     }
 
     @GetMapping(value = "/ai/ask/weather", produces = "text/html;charset=UTF-8")
